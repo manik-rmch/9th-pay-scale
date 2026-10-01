@@ -129,6 +129,13 @@ th:first-child,td:first-child{text-align:left}
   #printSheet .ct td{padding:3px 6px;font-size:11px;border-top:1px solid #cbd5e1}
   #printSheet .foot{margin-top:10px;font-size:11px;text-align:center;color:#475569}
 }
+.steps li.sec{background:#ecfdf5;color:#047857;font-weight:700;border-bottom:0;padding:8px 10px;border-radius:8px;margin-top:10px}
+.steps li.key{background:#fffbeb;padding-left:10px;padding-right:10px;border-radius:6px}
+.steps li.key span:last-child{color:#b45309}
+.eye{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1.5px solid #c7d2fe;background:#fff;color:#4338ca;cursor:pointer;flex:none}
+.eye:hover{background:#eef2ff}
+.eye svg{width:22px;height:22px}
+@media(max-width:760px){.c-fix .head-row,.c-arr .head-row{flex-direction:row;align-items:center}.c-fix .head-row h2,.c-arr .head-row h2{margin:0}}
 </style>
 </head>
 <body>
@@ -188,19 +195,20 @@ th:first-child,td:first-child{text-align:left}
 
   <div id="out" hidden>
     <div class="card c-fix">
-      <h2>ফিক্সেশনের ধাপ (অনুচ্ছেদ ৫)</h2>
-      <ul class="steps" id="steps"></ul>
-      <div class="result">১ জুলাই ২০২৬ থেকে নতুন স্কেলে আপনার মূল বেতন (বার্ষিক বৃদ্ধিসহ)<br><b id="newBasic"></b><div class="hint" id="newHint"></div></div>
+      <div class="head-row"><h2>ফিক্সেশনের ধাপ (অনুচ্ছেদ ৫)</h2><button type="button" class="eye" id="eyeSteps"></button></div>
+      <ul class="steps" id="steps" hidden></ul>
+      <div class="result">নতুন স্কেলে নির্ধারিত মূল বেতন (বার্ষিক বৃদ্ধিসহ)<br><b id="newBasic"></b><div class="hint" id="newHint"></div></div>
     </div>
 
     <div class="card c-ph">
       <h2>কিস্তি অনুযায়ী মূল বেতন (অনুচ্ছেদ ১(৩))</h2>
       <table id="phase"></table>
-      <div class="hint">সূত্র: বর্তমান বেতন + (বার্ষিক বৃদ্ধিসহ নতুন বেতন − বর্তমান বেতন) × শতকরা হার (অনুচ্ছেদ ১(৩))। পরবর্তী বার্ষিক বৃদ্ধি ১ জুলাই ২০২৭। এখানে শুধু মূল বেতন ধরা হয়েছে, ভাতা নয়।</div>
+      <div class="hint">iBAS++ পদ্ধতি: প্রাপ্য বেতন = বর্তমান বেতন + (নতুন স্কেলের সমধাপ/উচ্চতর ধাপ − বর্তমান বেতন) × শতকরা হার + ১ জুলাই ২০২৬-এর ইনক্রিমেন্ট। পরবর্তী বার্ষিক বৃদ্ধি ১ জুলাই ২০২৭। এখানে শুধু মূল বেতন ধরা হয়েছে, ভাতা নয়।</div>
     </div>
 
     <div class="card c-arr">
-      <h2>বকেয়া হিসাব (৯ম স্কেল কার্যকর হলে)</h2>
+      <div class="head-row"><h2>বকেয়া হিসাব (৯ম স্কেল কার্যকর হলে)</h2><button type="button" class="eye" id="eyeArr"></button></div>
+      <div id="arrBody" hidden>
       <label for="months">কত মাসের বকেয়া (১ জুলাই ২০২৬ থেকে)</label>
       <select autocomplete="off" id="months" style="max-width:360px">
         <option value="1">১ মাস (জুলাই ২০২৬)</option>
@@ -213,7 +221,7 @@ th:first-child,td:first-child{text-align:left}
       <div style="overflow-x:auto"><table id="acmp" class="ct"></table></div>
       <h3>বকেয়া ও সমন্বয়</h3>
       <div class="lst" id="asum"></div>
-      <div class="hint" id="anote" style="margin-top:10px"></div>
+      <div class="hint" id="anote" style="margin-top:10px"></div></div>
     </div>
 
     <div class="card c-claim" id="allow">
@@ -272,6 +280,8 @@ function fix(g,old){
   steps.push([n[idx]===cand?'যোগফল নতুন স্কেলের ধাপের সমান, ৫(খ)(অ)':'যোগফল কোনো ধাপের সমান নয়, তাই পরবর্তী উচ্চতর ধাপ, ৫(খ)(আ)',bn(n[idx])]);
   return{steps,nb:n[idx],idx,cand};
 }
+// iBAS++ পদ্ধতি: প্রাপ্য বেতন = বর্তমান বেতন + (সমধাপ/উচ্চতর ধাপ − বর্তমান বেতন) × শতাংশ + ১ জুলাই ২০২৬-এর ইনক্রিমেন্ট
+function phaseBasic(g,old,r,i){const pp=g<=9?[40,70]:[50,75];return r2(old+(r.fixed-old)*pp[i]/100+(r.nb-r.fixed));}
 function calc(){
   const g=+$('grade').value;
   if(!g){$('old').disabled=true;$('oldHint').textContent='';$('err').textContent='';$('out').hidden=true;$('empty').hidden=false;return;}
@@ -296,17 +306,37 @@ function calc(){
     }else if(r.idx>=d.n.length-1)r.steps.push(['স্কেলের সর্বোচ্চ ধাপে আছেন, তাই বৃদ্ধি নেই','']);
     else r.steps.push(['কোয়ালিফাইং চাকরি ৬ মাসের কম, তাই এখন বৃদ্ধি নেই','']);
   }
-  $('steps').innerHTML=r.steps.map(s=>'<li><span>'+s[0]+'</span><span>'+s[1]+'</span></li>').join('');
-  $('newBasic').textContent='৳ '+bn(r.nb);
-  $('newHint').textContent=r.idx===d.n.length-1&&r.cand>r.fixed?'যোগফল স্কেলের সর্বোচ্চ ধাপ ছাড়িয়েছে, গেজেট দেখে নিশ্চিত হোন।':'স্কেলের '+bn(r.idx+1)+' নম্বর ধাপ';
   const p=g<=9?[40,70]:[50,75];
   const nb2=(g!==1&&r.idx<d.n.length-1)?d.n[r.idx+1]:r.nb;
-  const rows=[['জুলাই–ডিসেম্বর ২০২৬',p[0]],['জানুয়ারি–জুন ২০২৭',p[1]],['জুলাই ২০২৭ থেকে (১ জুলাই ২০২৭-এর বার্ষিক বৃদ্ধিসহ)',100]];
+  const dlt=r.fixed-old,ph=[phaseBasic(g,old,r,0),phaseBasic(g,old,r,1)];
+  const L=(l,v,c)=>'<li'+(c?' class="'+c+'"':'')+'><span>'+l+'</span><span>'+v+'</span></li>';
+  let S=L('৩০-০৬-২০২৬ (জাতীয় বেতনস্কেল-২০১৫)','','sec')
+   +L('১) মূল বেতন',bnf(old))+L('২) প্রারম্ভিক ধাপ',bnf(d.os))+L('৩) পার্থক্য [১নং − ২নং]',bnf(old-d.os))
+   +L('০১-০৭-২০২৬ (জাতীয় বেতনস্কেল-২০২৬)','','sec')
+   +L('৪) প্রারম্ভিক ধাপ',bnf(d.n[0]))+L('৫) মোট [৩নং + ৪নং]',bnf(old-d.os+d.n[0]))
+   +L('৬) নতুন স্কেলের সমধাপ/উচ্চতর ধাপ',bnf(r.fixed))
+   +L('৭) বার্ষিক বেতন বৃদ্ধি (ইনক্রিমেন্ট) সহ মূল বেতন',bnf(r.nb),'key')
+   +L('৮) বেতন বৃদ্ধির পরিমাণ [৬নং − ১নং]',bnf(dlt))
+   +L('৯) বেতন বৃদ্ধির '+bn(p[0])+'% [৮নং-এর '+bn(p[0])+'%]',bnf(dlt*p[0]/100))
+   +L('১০) প্রাপ্য বেতন [১নং + ৯নং]',bnf(old+dlt*p[0]/100))
+   +L('১১) বার্ষিক বেতন বৃদ্ধি (ইনক্রিমেন্ট) সহ প্রাপ্য বেতন [১০নং + ইনক্রিমেন্ট]',bnf(ph[0]),'key')
+   +L('০১-০১-২০২৭','','sec')
+   +L('১২) পরবর্তী '+bn(p[1]-p[0])+'% বেতন বৃদ্ধি [৮নং-এর '+bn(p[1]-p[0])+'%]',bnf(dlt*(p[1]-p[0])/100))
+   +L('১৩) প্রাপ্য বেতন [১১নং + ১২নং]',bnf(ph[1]),'key')
+   +L('০১-০৭-২০২৭','','sec')
+   +L('১৪) অবশিষ্ট '+bn(100-p[1])+'% বেতন বৃদ্ধি [৮নং-এর '+bn(100-p[1])+'%]',bnf(dlt*(100-p[1])/100))
+   +L('১৫) প্রাপ্য বেতন [১৩নং + ১৪নং]',bnf(r.nb))
+   +L('১৬) বার্ষিক বেতন বৃদ্ধি (ইনক্রিমেন্ট) সহ প্রাপ্য মূল বেতন',bnf(nb2),'key');
+  if(!$('elig').checked&&g!==1)S+=L('কোয়ালিফাইং চাকরি ৬ মাসের কম, তাই ১ জুলাই ২০২৬-এ ইনক্রিমেন্ট ধরা হয়নি','','sec');
+  $('steps').innerHTML=S;
+  $('newBasic').textContent='৳ '+bnf(r.nb);
+  $('newHint').textContent=(r.idx===d.n.length-1&&r.cand>r.fixed?'যোগফল স্কেলের সর্বোচ্চ ধাপ ছাড়িয়েছে, গেজেট দেখে নিশ্চিত হোন। ':'স্কেলের '+bn(r.idx+1)+' নম্বর ধাপ। ')+'১ জুলাই ২০২৬ থেকে প্রাপ্য বেতন (প্রথম ধাপ): '+bnf(ph[0]);
+  const rows=[['জুলাই–ডিসেম্বর ২০২৬',p[0],ph[0]],['জানুয়ারি–জুন ২০২৭',p[1],ph[1]],['জুলাই ২০২৭ থেকে (১ জুলাই ২০২৭-এর বার্ষিক বৃদ্ধিসহ)',100,nb2]];
   let h='<tr><th>সময়কাল</th><th>বৃদ্ধির অংশ</th><th>মূল বেতন</th></tr>';
-  rows.forEach((x,i)=>{h+='<tr class="ph'+i+'"><td>'+x[0]+'</td><td>'+bn(x[1])+'%</td><td>'+bnf(x[1]===100?nb2:old+(r.nb-old)*x[1]/100)+'</td></tr>'});
+  rows.forEach((x,i)=>{h+='<tr class="ph'+i+'"><td>'+x[0]+'</td><td>'+bn(x[1])+'%</td><td>'+bnf(x[2])+'</td></tr>'});
   $('phase').innerHTML=h;
   $('chips').innerHTML=d.n.map((v,i)=>'<span class="chip'+(i===r.idx?' on':'')+'">'+bn(v)+'</span>').join('');
-  allow(g,r.nb,old,nb2);
+  allow(g,r.nb,old,nb2,r);
   arrears(g,old,r);
 }
 function fillOld(){
@@ -380,11 +410,11 @@ function cardsHTML(cols,rows){
       :'<div class="pc-r'+(r.c?' '+r.c:'')+'"><span>'+r.l+'</span><span>'+r.v[i]+'</span></div>').join('')+'</div>').join('');
 }
 const sumA=a=>r2(a.reduce((t,x)=>t+x[1],0));
-function allow(g,nb,old,nb2){
+function allow(g,nb,old,nb2,r){
   const gpf=+toEn($('agpf').value)||0;
   const A=A15(g,old),B=B9(g,nb2);
   const p=g<=9?[40,70]:[50,75];
-  const basics=[old+(nb-old)*p[0]/100,old+(nb-old)*p[1]/100,nb2,nb2].map(r2);
+  const basics=[phaseBasic(g,old,r,0),phaseBasic(g,old,r,1),nb2,nb2].map(r2);
   const special=sbf(g,old);
   const names=[...new Set([...A,...B].map(x=>x[0]))];
   const sets=[A,A,A,B];
@@ -421,7 +451,7 @@ function allow(g,nb,old,nb2){
 function arrears(g,old,r){
   const d=D[g],io=d.o.indexOf(old);
   const drawnB=(g!==1&&$('elig').checked&&io>=0&&io<d.o.length-1)?d.o[io+1]:old; // ১ জুলাই ২০২৬-এ পুরনো স্কেলের বৃদ্ধিসহ
-  const Eb=r2(old+(r.nb-old)*(g<=9?40:50)/100);            // ৯ম গেজেটে প্রথম ধাপের মূল বেতন
+  const Eb=phaseBasic(g,old,r,0);            // ৯ম গেজেটে প্রথম ধাপের মূল বেতন
   const Acur=A15(g,drawnB),Aent=A15(g,old);                 // আহরিত ভাতা বনাম ৩০ জুন ২০২৬-এর অঙ্কে স্থির ভাতা
   const find=(a,n)=>(a.find(x=>x[0]===n)||[0,0])[1];
   const rentC=find(Acur,'বাড়ি ভাড়া'),rentE=find(Aent,'বাড়ি ভাড়া');
@@ -439,18 +469,26 @@ function arrears(g,old,r){
   $('acmp').innerHTML=T;
   const R=(l,v,c)=>'<div class="pc-r'+(c?' '+c:'')+'"><span>'+l+'</span><span>'+bnf(v)+'</span></div>';
   const n=bn(N);
+  const rentDiff=r2(rentC-rentE);
+  const xLabel=r2(X-rentDiff)===0?'বাড়ি ভাড়া বাড়তি আহরণ সমন্বয়':'বাড়ি ভাড়া ও অন্যান্য ভাতার বাড়তি আহরণ সমন্বয়';
   $('asum').innerHTML=
-    R('মূল বেতনের বকেয়া (প্রাপ্য − আহরিত) × '+n+' মাস',basicArr*N)
-   +R('(−) আহরিত বিশেষ সুবিধা সমন্বয় × '+n+' মাস',-SB*N)
+    R('মূল বেতনের বকেয়া (প্রাপ্য '+bnf(Eb)+' − '+bnf(drawnB)+' আহরিত) × '+n+' মাস',basicArr*N)
+   +R('(−) আহরিত বিশেষ সুবিধা সমন্বয় ('+bnf(SB)+') × '+n+' মাস',-SB*N)
    +R('নিট বকেয়া (গেজেট অনুযায়ী)',(basicArr-SB)*N,'hl')
-   +R('(−) বাড়ি ভাড়া বাড়তি আহরণ সমন্বয় × '+n+' মাস (সম্ভাব্য)',-X*N)
+   +R('(−) '+xLabel+' ('+bnf(X)+') × '+n+' মাস (সম্ভাব্য)',-X*N)
    +R('সম্ভাব্য নিট বকেয়া (সব সমন্বয়ের পর)',(basicArr-SB-X)*N,'net');
   $('anote').textContent='মূল বেতনের বকেয়া = ৯ম গেজেটে প্রাপ্য − এখন যা আহরণ করছেন, তাই ইতিমধ্যে পাওয়া বাড়তি মূল বেতন ('+bnf(drawnB-old)+' টাকা) নিজে থেকেই বাদ যায়। আহরিত বিশেষ সুবিধা বকেয়ার সঙ্গে সমন্বয়ের কথা ১(৩)(ট)-তে স্পষ্ট আছে। ভাতা ৩০ জুন ২০২৬-এর অঙ্কে স্থির, তাই তার বেশি আহরণ ('+bnf(X)+' টাকা প্রতি মাসে) সমন্বয় হতে পারে; গেজেটে আলাদা করে বলা নেই, হিসাবরক্ষণ অফিসের সিদ্ধান্ত দেখুন। বকেয়া মোট (Gross), কর ও অন্যান্য কর্তনের আগে।';
 }
+
+const EYE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+function eyeSet(btn,target,show){target.hidden=!show;btn.innerHTML=show?EYE_OFF:EYE;btn.title=show?'লুকান':'দেখান';btn.setAttribute('aria-label',btn.title);}
+[['eyeSteps','steps'],['eyeArr','arrBody']].forEach(([b,t])=>$(b).addEventListener('click',()=>eyeSet($(b),$(t),$(t).hidden)));
 function resetForm(){
   initGrade();fillOld();
   $('aarea').value='city';$('ahill').value='';$('akids').value='0';$('adis').value='0';$('aage').value='3000';$('agpf').value='0';$('months').value='3';
   ['aquar','ameal','awash','awork','atrain'].forEach(id=>$(id).checked=false);$('elig').checked=true;
+  eyeSet($('eyeSteps'),$('steps'),false);eyeSet($('eyeArr'),$('arrBody'),false);
   calc();
 }
 ['old','months','elig','aarea','ahill','akids','adis','aage','agpf','aquar','ameal','awash','awork','atrain'].forEach(id=>$(id).addEventListener('input',calc));
