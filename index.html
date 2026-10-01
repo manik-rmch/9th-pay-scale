@@ -65,7 +65,7 @@ th:first-child,td:first-child{text-align:left}
 .ct td{padding:8px 10px;font-size:14px}
 .ct tbody tr:nth-child(even) td{background:#f8fafc}
 .ct tr.void td{color:#94a3b8}
-.ct s,.pc s{text-decoration-thickness:2px;color:#94a3b8}
+.ct s,.pc s{text-decoration-thickness:1px;color:#94a3b8}
 .ct tr.hl td{background:#dbeafe!important;color:#1e3a8a;font-weight:700}
 .ct tr.sec td{background:#ffe4e6!important;color:#9f1239;font-weight:700;text-align:left}
 .ct tr.ded2 td{background:#fee2e2!important;color:#991b1b;font-weight:700}
@@ -104,6 +104,14 @@ th:first-child,td:first-child{text-align:left}
   select{text-overflow:ellipsis}
 }
 
+
+.btn-reset{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:#fff;color:#be123c;border:2px solid #fda4af;border-radius:10px;font:600 15px "Noto Sans Bengali",system-ui,sans-serif;cursor:pointer}
+.btn-reset:hover{background:#ffe4e6}
+.empty{padding:18px;text-align:center;color:var(--mute);background:#f8fafc;border:1.5px dashed #c7d2fe;border-radius:12px;margin-bottom:18px}
+.lst{border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:680px;margin:0 auto}
+.lst .pc-r:first-child{border-top:0}
+.c-arr{border-top-color:#e11d48}.c-arr h2{color:#be123c}
+@media(max-width:760px){.c-in .head-row{flex-direction:row;align-items:center}.c-in .head-row h2{margin:0}.btn-reset{padding:8px 14px}}
 /* প্রিন্ট ভিউ */
 @media print{
   @page{size:A4;margin:10mm}
@@ -135,43 +143,48 @@ th:first-child,td:first-child{text-align:left}
   </div>
 
   <div class="card c-in">
-    <h2>আপনার তথ্য</h2>
+    <div class="head-row"><h2>আপনার তথ্য</h2><button type="button" class="btn-reset" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> রিসেট</button></div>
     <div class="row">
-      <div><label for="grade">গ্রেড</label><select id="grade"></select></div>
-      <div><label for="old">৩০ জুন ২০২৬ তারিখের মূল বেতন (ধাপ বেছে নিন)</label><select id="old"></select></div>
-      <div><label for="agpf">জিপিএফ কর্তন (টাকা)</label><input id="agpf" inputmode="numeric" value="0"></div>
-      <div class="wide"><label for="aarea">কর্মস্থলের এলাকা (বাড়ি ভাড়ার জন্য)</label><select id="aarea">
-        <option value="0">ঢাকা উত্তর ও দক্ষিণ সিটি কর্পোরেশন</option>
-        <option value="1" selected>চট্টগ্রাম, খুলনা, রাজশাহী, সিলেট, বরিশাল, রংপুর, নারায়ণগঞ্জ, গাজীপুর, কুমিল্লা, ময়মনসিংহ, বগুড়া সিটি কর্পোরেশন; সাভার ও কক্সবাজার পৌর এলাকা</option>
-        <option value="2">অন্যান্য স্থান</option></select></div>
-      <div><label for="ahill">অঞ্চলভিত্তিক ভাতা</label><select id="ahill">
+      <div><label for="grade">গ্রেড</label><select autocomplete="off" id="grade"></select></div>
+      <div><label for="old">৩০ জুন ২০২৬ তারিখের মূল বেতন (ধাপ বেছে নিন)</label><select autocomplete="off" id="old"></select></div>
+      <div><label for="agpf">জিপিএফ কর্তন (টাকা)</label><input autocomplete="off" id="agpf" inputmode="numeric" value="0"></div>
+      <div class="wide"><label for="aarea">কর্মস্থলের এলাকা (বাড়ি ভাড়ার জন্য)</label><select autocomplete="off" id="aarea">
+        <option value="dhaka">ঢাকা উত্তর ও দক্ষিণ সিটি কর্পোরেশন</option>
+        <option value="city" selected>চট্টগ্রাম, খুলনা, রাজশাহী, সিলেট, বরিশাল, রংপুর, নারায়ণগঞ্জ ও গাজীপুর সিটি কর্পোরেশন</option>
+        <option value="cmb">কুমিল্লা, ময়মনসিংহ ও বগুড়া সিটি কর্পোরেশন</option>
+        <option value="savar">সাভার পৌর এলাকা</option>
+        <option value="cox">কক্সবাজার পৌর এলাকা</option>
+        <option value="other">অন্যান্য স্থান</option></select></div>
+      <div><label for="ahill">অঞ্চলভিত্তিক ভাতা</label><select autocomplete="off" id="ahill">
         <option value="">প্রযোজ্য নয়</option>
         <option value="h1">পার্বত্য জেলা সদর/সদর উপজেলা</option>
         <option value="h2">পার্বত্য অন্যান্য উপজেলা</option>
         <option value="h3">হাওড়/দ্বীপ/চর</option></select></div>
-      <div><label for="akids">সন্তানের সংখ্যা (শিক্ষা ভাতার জন্য)</label><select id="akids">
+      <div><label for="akids">সন্তানের সংখ্যা (শিক্ষা ভাতার জন্য)</label><select autocomplete="off" id="akids">
         <option value="0">কোন সন্তান নেই (০ টাকা)</option>
         <option value="1">১ সন্তান (৫০০ টাকা)</option>
         <option value="2">২ বা ততোধিক সন্তান (১০০০ টাকা)</option></select></div>
-      <div><label for="adis">প্রতিবন্ধী সন্তানের সংখ্যা (প্রতিবন্ধী ভাতার জন্য)</label><select id="adis">
+      <div><label for="adis">প্রতিবন্ধী সন্তানের সংখ্যা (প্রতিবন্ধী ভাতার জন্য)</label><select autocomplete="off" id="adis">
         <option value="0">কোন সন্তান নেই (০ টাকা)</option>
         <option value="1">১ সন্তান (৩০০০ টাকা)</option>
         <option value="2">২ বা ততোধিক সন্তান (৬০০০ টাকা)</option></select></div>
-      <div><label for="aage">বয়স (চিকিৎসা ভাতার জন্য)</label><select id="aage">
+      <div><label for="aage">বয়স (চিকিৎসা ভাতার জন্য)</label><select autocomplete="off" id="aage">
         <option value="3000">৫০ বছর পর্যন্ত (৩০০০ টাকা)</option>
         <option value="4000">৫০ বছর ১ দিন থেকে পিআরএল পর্যন্ত (৪০০০ টাকা)</option></select></div>
     </div>
     <div class="checks">
-      <label class="chk"><input type="checkbox" id="aquar"> সরকারি বাসস্থানে থাকি (বাড়ি ভাড়া নেই)</label>
-      <label class="chk"><input type="checkbox" id="ameal"> প্রতিষ্ঠান থেকে লাঞ্চ/বিনামূল্যে দুপুরের খাবার পাই (টিফিন নেই)</label>
-      <label class="chk"><input type="checkbox" id="awash"> ধোলাই ভাতা প্রযোজ্য</label>
-      <label class="chk"><input type="checkbox" id="awork"> চলতি/অতিরিক্ত দায়িত্ব পালন করছি (কার্যভার)</label>
-      <label class="chk"><input type="checkbox" id="atrain"> প্রশিক্ষণ প্রতিষ্ঠানে শুধু প্রশিক্ষণ কাজে প্রেষণে (৯ম গ্রেড ও ঊর্ধ্ব)</label>
-      <label class="chk"><input type="checkbox" id="elig" checked> ৩০ জুন ২০২৬ পর্যন্ত আমার কোয়ালিফাইং চাকরি ৬ মাস বা তার বেশি</label>
+      <label class="chk"><input autocomplete="off" type="checkbox" id="aquar"> সরকারি বাসস্থানে থাকি (বাড়ি ভাড়া নেই)</label>
+      <label class="chk"><input autocomplete="off" type="checkbox" id="ameal"> প্রতিষ্ঠান থেকে লাঞ্চ/বিনামূল্যে দুপুরের খাবার পাই (টিফিন নেই)</label>
+      <label class="chk"><input autocomplete="off" type="checkbox" id="awash"> ধোলাই ভাতা প্রযোজ্য</label>
+      <label class="chk"><input autocomplete="off" type="checkbox" id="awork"> চলতি/অতিরিক্ত দায়িত্ব পালন করছি (কার্যভার)</label>
+      <label class="chk"><input autocomplete="off" type="checkbox" id="atrain"> প্রশিক্ষণ প্রতিষ্ঠানে শুধু প্রশিক্ষণ কাজে প্রেষণে (৯ম গ্রেড ও ঊর্ধ্ব)</label>
+      <label class="chk"><input autocomplete="off" type="checkbox" id="elig" checked> ৩০ জুন ২০২৬ পর্যন্ত আমার কোয়ালিফাইং চাকরি ৬ মাস বা তার বেশি</label>
     </div>
     <div class="hint" id="oldHint"></div>
     <div class="err" id="err" role="alert"></div>
   </div>
+
+  <div class="empty" id="empty">প্রথমে গ্রেড ও বেতন বেছে নিন।</div>
 
   <div id="out" hidden>
     <div class="card c-fix">
@@ -184,9 +197,23 @@ th:first-child,td:first-child{text-align:left}
       <h2>কিস্তি অনুযায়ী মূল বেতন (অনুচ্ছেদ ১(৩))</h2>
       <table id="phase"></table>
       <div class="hint">সূত্র: বর্তমান বেতন + (বার্ষিক বৃদ্ধিসহ নতুন বেতন − বর্তমান বেতন) × শতকরা হার (অনুচ্ছেদ ১(৩))। পরবর্তী বার্ষিক বৃদ্ধি ১ জুলাই ২০২৭। এখানে শুধু মূল বেতন ধরা হয়েছে, ভাতা নয়।</div>
-      <label for="months" style="margin-top:14px">বকেয়া হিসাবের মাস (১ জুলাই ২০২৬ থেকে)</label>
-      <input id="months" inputmode="numeric" value="3" style="max-width:140px">
-      <div class="hint" id="arrears"></div>
+    </div>
+
+    <div class="card c-arr">
+      <h2>বকেয়া হিসাব (৯ম স্কেল কার্যকর হলে)</h2>
+      <label for="months">কত মাসের বকেয়া (১ জুলাই ২০২৬ থেকে)</label>
+      <select autocomplete="off" id="months" style="max-width:360px">
+        <option value="1">১ মাস (জুলাই ২০২৬)</option>
+        <option value="2">২ মাস (জুলাই–আগস্ট)</option>
+        <option value="3" selected>৩ মাস (জুলাই–সেপ্টেম্বর)</option>
+        <option value="4">৪ মাস (জুলাই–অক্টোবর)</option>
+        <option value="5">৫ মাস (জুলাই–নভেম্বর)</option>
+        <option value="6">৬ মাস (জুলাই–ডিসেম্বর)</option></select>
+      <h3>প্রতি মাসের তুলনা</h3>
+      <div style="overflow-x:auto"><table id="acmp" class="ct"></table></div>
+      <h3>বকেয়া ও সমন্বয়</h3>
+      <div class="lst" id="asum"></div>
+      <div class="hint" id="anote" style="margin-top:10px"></div>
     </div>
 
     <div class="card c-claim" id="allow">
@@ -218,9 +245,15 @@ th:first-child,td:first-child{text-align:left}
 const D={"1":{"os":78000,"om":78000,"n":[156000],"o":[78000]},"2":{"os":66000,"om":76490,"n":[132000,135700,139400,143200,147200,151200,153000],"o":[66000,68480,71050,73720,76490]},"3":{"os":56500,"om":74400,"n":[113000,117000,121100,125300,129700,134300,139000,143800,148800],"o":[56500,58760,61120,63570,66120,68770,71530,74400]},"4":{"os":50000,"om":71200,"n":[100000,103500,107200,110900,114800,118800,123000,127300,131700,136300,142400],"o":[50000,52000,54080,56250,58500,60840,63280,65820,68460,71200]},"5":{"os":43000,"om":69850,"n":[86000,89500,93100,96800,100700,104700,108900,113200,117700,122500,127400,132400,139700],"o":[43000,44940,46970,49090,51300,53610,56030,58560,61200,63960,66840,69850]},"6":{"os":35500,"om":67010,"n":[71000,74600,78300,82200,86300,90700,95200,100000,105000,110200,115700,121500,127600,134000],"o":[35500,37280,39150,41110,43170,45330,47600,49980,52480,55110,57870,60770,63810,67010]},"7":{"os":29000,"om":63410,"n":[58000,60900,64000,67200,70500,74100,77800,81700,85700,90000,94500,99200,104200,109400,114900,120600,126800],"o":[29000,30450,31980,33580,35260,37030,38890,40840,42890,45040,47300,49670,52160,54770,57510,60390,63410]},"8":{"os":23000,"om":55470,"n":[46000,48300,50800,53300,56000,58800,61700,64800,68000,71400,75000,78700,82700,86800,91100,95700,100500,105500,110800],"o":[23000,24150,25360,26630,27970,29370,30840,32390,34010,35720,37510,39390,41360,43430,45610,47900,50300,52820,55470]},"9":{"os":22000,"om":53060,"n":[44000,46200,48600,51000,53500,56200,59000,62000,65100,68300,71700,75300,79100,83000,87200,91500,96100,100900,105900],"o":[22000,23100,24260,25480,26760,28100,29510,30990,32540,34170,35880,37680,39570,41550,43630,45820,48120,50530,53060]},"10":{"os":16000,"om":38640,"n":[32000,33600,35300,37100,38900,40900,42900,45100,47300,49700,52200,54800,57500,60400,63400,66600,69900,73400,77300],"o":[16000,16800,17640,18530,19460,20440,21470,22550,23680,24870,26120,27430,28810,30260,31780,33370,35040,36800,38640]},"11":{"os":12500,"om":30230,"n":[25000,26300,27600,29000,30400,32000,33600,35200,37000,38800,40800,42800,44900,47200,49500,52000,54600,57300,60500],"o":[12500,13130,13790,14480,15210,15980,16780,17620,18510,19440,20420,21450,22530,23660,24850,26100,27410,28790,30230]},"12":{"os":11300,"om":27300,"n":[24300,25600,26800,28200,29600,31100,32600,34200,36000,37700,39600,41600,43700,45900,48200,50600,53100,55700,58700],"o":[11300,11870,12470,13100,13760,14450,15180,15940,16740,17580,18460,19390,20360,21380,22450,23580,24760,26000,27300]},"13":{"os":11000,"om":26590,"n":[24000,25200,26500,27800,29200,30700,32200,33800,35500,37300,39100,41100,43200,45300,47600,49900,52400,55100,58000],"o":[11000,11550,12130,12740,13380,14050,14760,15500,16280,17100,17960,18860,19810,20810,21860,22960,24110,25320,26590]},"14":{"os":10200,"om":24680,"n":[23500,24700,26000,27300,28600,30000,31500,33100,34800,36500,38300,40200,42300,44400,46600,48900,51300,53900,56800],"o":[10200,10710,11250,11820,12420,13050,13710,14400,15120,15880,16680,17520,18400,19320,20290,21310,22380,23500,24680]},"15":{"os":9700,"om":23490,"n":[22800,24000,25200,26400,27800,29100,30600,32100,33700,35400,37200,39000,41000,43000,45200,47400,49800,52300,55200],"o":[9700,10190,10700,11240,11810,12410,13040,13700,14390,15110,15870,16670,17510,18390,19310,20280,21300,22370,23490]},"16":{"os":9300,"om":22490,"n":[21900,23000,24200,25400,26700,28000,29400,30900,32400,34000,35700,37500,39400,41300,43400,45600,47900,50200,52900],"o":[9300,9770,10260,10780,11320,11890,12490,13120,13780,14470,15200,15960,16760,17600,18480,19410,20390,21410,22490]},"17":{"os":9000,"om":21800,"n":[21400,22500,23600,24800,26100,27400,28700,30200,31700,33200,34900,36700,38500,40400,42400,44500,46800,49100,51900],"o":[9000,9450,9930,10430,10960,11510,12090,12700,13340,14010,14720,15460,16240,17060,17920,18820,19770,20760,21800]},"18":{"os":8800,"om":21310,"n":[21000,22100,23200,24400,25600,26900,28200,29600,31100,32600,34300,36000,37800,39600,41600,43700,45900,48200,50900],"o":[8800,9240,9710,10200,10710,11250,11820,12420,13050,13710,14400,15120,15880,16680,17520,18400,19320,20290,21310]},"19":{"os":8500,"om":20570,"n":[20500,21600,22700,23800,25000,26200,27500,28900,30300,31900,33400,35100,36900,38700,40600,42700,44800,47000,49600],"o":[8500,8930,9380,9850,10350,10870,11420,12000,12600,13230,13900,14600,15330,16100,16910,17760,18650,19590,20570]},"20":{"os":8250,"om":20010,"n":[20000,21000,22100,23200,24400,25600,26900,28200,29600,31100,32600,34300,36000,37800,39600,41600,43700,45900,48200],"o":[8250,8670,9110,9570,10050,10560,11090,11650,12240,12860,13510,14190,14900,15650,16440,17270,18140,19050,20010]}};
 const $=id=>document.getElementById(id);
 const bn=n=>Math.round(n).toLocaleString('bn-BD',{maximumFractionDigits:0});
+// পয়সা থাকলে ২ ঘর, না থাকলে পূর্ণ সংখ্যা; রাউন্ড করা হয় না
+const r2=x=>Math.round(x*100)/100;
+const bnf=n=>{const r=r2(n);return r.toLocaleString('bn-BD',{minimumFractionDigits:Number.isInteger(r)?0:2,maximumFractionDigits:2});};
 const toEn=s=>String(s).replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d)).replace(/[^0-9]/g,'');
-for(let g=1;g<=20;g++)$('grade').add(new Option(bn(g)+' নং গ্রেড',g));
-$('grade').value=11;
+function initGrade(){
+  $('grade').innerHTML='<option value="">— গ্রেড বাছুন —</option>';
+  for(let g=1;g<=20;g++)$('grade').add(new Option(bn(g)+' নং গ্রেড',g));
+  $('grade').value='';
+}
 function fix(g,old){
   const d=D[g],n=d.n,steps=[];
   if(g===1)return{steps:[['১ম গ্রেড নির্ধারিত বেতন, ৫(গ) অনুযায়ী ফিক্সেশন প্রযোজ্য নয়','']],nb:n[0],idx:0};
@@ -240,17 +273,20 @@ function fix(g,old){
   return{steps,nb:n[idx],idx,cand};
 }
 function calc(){
-  const g=+$('grade').value,d=D[g];
+  const g=+$('grade').value;
+  if(!g){$('old').disabled=true;$('oldHint').textContent='';$('err').textContent='';$('out').hidden=true;$('empty').hidden=false;return;}
+  $('old').disabled=false;
+  const d=D[g];
   $('oldHint').textContent=g===1?'১ম গ্রেডের বর্তমান বেতন ৭৮,০০০ (নির্ধারিত)।':'বর্তমান (২০১৫) স্কেল: '+bn(d.os)+(d.om?' থেকে '+bn(d.om):'')+' টাকা।';
   if(g===1)$('old').value='78000';
   const raw=toEn($('old').value),old=+raw;
   let err='';
-  if(!raw)err='';
-  else if(old<d.os)err='এই গ্রেডের প্রারম্ভিক বেতন '+bn(d.os)+' টাকা, এর কম হতে পারে না।';
-  else if(d.om&&old>d.om)err='এই গ্রেডের সর্বোচ্চ বেতন '+bn(d.om)+' টাকা, এর বেশি হতে পারে না।';
+  if(raw&&old<d.os)err='এই গ্রেডের প্রারম্ভিক বেতন '+bn(d.os)+' টাকা, এর কম হতে পারে না।';
+  else if(raw&&d.om&&old>d.om)err='এই গ্রেডের সর্বোচ্চ বেতন '+bn(d.om)+' টাকা, এর বেশি হতে পারে না।';
   $('err').textContent=err;
-  $('out').hidden=!raw||!!err;
-  if(!raw||err)return;
+  const show=!!raw&&!err;
+  $('out').hidden=!show;$('empty').hidden=show;
+  if(!show)return;
   const r=fix(g,old);
   r.fixed=r.nb;
   if(g!==1){
@@ -267,26 +303,68 @@ function calc(){
   const nb2=(g!==1&&r.idx<d.n.length-1)?d.n[r.idx+1]:r.nb;
   const rows=[['জুলাই–ডিসেম্বর ২০২৬',p[0]],['জানুয়ারি–জুন ২০২৭',p[1]],['জুলাই ২০২৭ থেকে (১ জুলাই ২০২৭-এর বার্ষিক বৃদ্ধিসহ)',100]];
   let h='<tr><th>সময়কাল</th><th>বৃদ্ধির অংশ</th><th>মূল বেতন</th></tr>';
-  rows.forEach((x,i)=>{h+='<tr class="ph'+i+'"><td>'+x[0]+'</td><td>'+bn(x[1])+'%</td><td>'+bn(x[1]===100?nb2:old+(r.nb-old)*x[1]/100)+'</td></tr>'});
+  rows.forEach((x,i)=>{h+='<tr class="ph'+i+'"><td>'+x[0]+'</td><td>'+bn(x[1])+'%</td><td>'+bnf(x[1]===100?nb2:old+(r.nb-old)*x[1]/100)+'</td></tr>'});
   $('phase').innerHTML=h;
-  const m=Math.max(0,+toEn($('months').value)||0),inc=(r.nb-old)*p[0]/100;
-  $('arrears').textContent=m?bn(m)+' মাসে মূল বেতনের বকেয়া: '+bn(inc*m)+' টাকা (প্রতি মাসে '+bn(inc)+')। ভাতার বকেয়া এতে ধরা হয়নি।':'';
   $('chips').innerHTML=d.n.map((v,i)=>'<span class="chip'+(i===r.idx?' on':'')+'">'+bn(v)+'</span>').join('');
   allow(g,r.nb,old,nb2);
+  arrears(g,old,r);
 }
-['old','months','elig'].forEach(id=>$(id).addEventListener('input',calc));
 function fillOld(){
-  const d=D[$('grade').value];
-  $('old').innerHTML=d.o.map((v,i)=>'<option value="'+v+'">'+(d.o.length>1?'ধাপ '+bn(i+1)+': ':'')+bn(v)+'</option>').join('');
+  const gv=$('grade').value;
+  if(!gv){$('old').innerHTML='<option value="">— আগে গ্রেড বাছুন —</option>';$('old').disabled=true;return;}
+  const d=D[gv];$('old').disabled=false;
+  $('old').innerHTML='<option value="">— বেতন বাছুন —</option>'+d.o.map((v,i)=>'<option value="'+v+'">'+(d.o.length>1?'ধাপ '+bn(i+1)+': ':'')+bn(v)+'</option>').join('');
+  $('old').value='';
 }
 $('grade').addEventListener('input',()=>{fillOld();calc()});
 
+// কর্মস্থল: a = ২০১৫ গেজেটের সারণির কলাম, b = ৯ম গেজেটের কলাম, cc = সিটি কর্পোরেশন (যাতায়াত ভাতা)
+const AREAS={dhaka:{a:0,b:0,cc:1},city:{a:1,b:1,cc:1},cmb:{a:2,b:1,cc:1},savar:{a:1,b:1,cc:0},cox:{a:2,b:1,cc:0},other:{a:2,b:2,cc:0}};
+const ENT={1:1000,2:900,3:600}; // আপ্যায়ন ভাতা: সচিব / অতিরিক্ত সচিব / যুগ্মসচিব পদ
+const sbf=(g,b)=>Math.max(r2(b*(g<=9?10:15)/100),1500); // বিশেষ সুবিধা: গ্রেড ১–৯ = ১০%, ১০–২০ = ১৫%, ন্যূনতম ১৫০০
 function rent15(b,c){ // ২০১৫ গেজেট, অনুচ্ছেদ ১৭(৭) সারণি
   const T=[[9700,[65,5600],[55,5000],[50,4500]],[16000,[60,6400],[50,5400],[45,4800]],[35500,[55,9600],[45,8000],[40,7000]],[1e12,[50,19500],[40,16000],[35,13800]]];
-  const r=T.find(x=>b<=x[0])[c+1];return Math.max(Math.round(b*r[0]/100),r[1]);
+  const r=T.find(x=>b<=x[0])[c+1];return Math.max(r2(b*r[0]/100),r[1]);
 }
 var WF_PCT=1,WF_MAX=150,STAMP=10; // কল্যাণ তহবিল ও স্ট্যাম্প ডিউটির হার
 const PH=[['প্রথম ধাপে','জুলাই–ডিসেম্বর ২০২৬'],['দ্বিতীয় ধাপে','জানুয়ারি–জুন ২০২৭'],['তৃতীয় ধাপে','জুলাই–ডিসেম্বর ২০২৭'],['চতুর্থ ধাপ থেকে','জানুয়ারি ২০২৮ থেকে']];
+// ২০১৫ গেজেটের হারে ভাতা (b = মূল বেতন)
+function A15(g,b){
+  const ar=AREAS[$('aarea').value],h=$('ahill').value,k=+$('akids').value,tf=g>=11,A=[];
+  if(!$('aquar').checked)A.push(['বাড়ি ভাড়া',rent15(b,ar.a)]);
+  A.push(['চিকিৎসা',1500]);
+  if(k)A.push(['শিক্ষা সহায়ক',k*500]);
+  if(tf&&!$('ameal').checked)A.push(['টিফিন',200]);
+  if(tf&&ar.cc)A.push(['যাতায়াত',300]);
+  if(ENT[g])A.push(['আপ্যায়ন',ENT[g]]);
+  if($('awash').checked)A.push(['ধোলাই',100]);
+  if($('awork').checked)A.push(['কার্যভার',Math.min(r2(b*.1),1500)]);
+  if(h==='h1')A.push(['পাহাড়ি',Math.min(r2(b*.2),3000)]);
+  if(h==='h2')A.push(['পাহাড়ি',Math.min(r2(b*.2),5000)]);
+  if($('atrain').checked&&g<=9)A.push(['প্রশিক্ষণ প্রেষণ (১০%)',r2(b*.1)]);
+  return A;
+}
+// ৯ম গেজেটের হারে ভাতা (১ জানুয়ারি ২০২৮ থেকে)
+function B9(g,b){
+  const ar=AREAS[$('aarea').value],h=$('ahill').value,k=+$('akids').value,dk=+$('adis').value,tf=g>=11,B=[];
+  const gr=g>=16?0:g>=10?1:g>=5?2:3;
+  const pct=[[60,50,45],[50,40,35],[45,35,30],[40,30,25]][gr][ar.b];
+  if(!$('aquar').checked)B.push(['বাড়ি ভাড়া',r2(b*pct/100)]);
+  B.push(['চিকিৎসা',+$('aage').value]);
+  if(k)B.push(['শিক্ষা সহায়ক',k*500]);
+  if(dk)B.push(['প্রতিবন্ধী সন্তান',dk*3000]);
+  if(tf&&!$('ameal').checked)B.push(['টিফিন',500]);
+  if(tf&&ar.cc)B.push(['যাতায়াত',600]);
+  if(ENT[g])B.push(['আপ্যায়ন',ENT[g]]);
+  B.push(['মোবাইল',g<=5?500:150]);
+  if($('awash').checked)B.push(['ধোলাই',300]);
+  if($('awork').checked)B.push(['কার্যভার',1500]);
+  if(h==='h1')B.push(['পাহাড়ি',Math.min(r2(b*.2),5000)]);
+  if(h==='h2')B.push(['পাহাড়ি',Math.min(r2(b*.2),5500)]);
+  if(h==='h3')B.push(['হাওড়/দ্বীপ/চর',Math.min(r2(b*.2),5000)]);
+  if($('atrain').checked&&g<=9)B.push(['প্রশিক্ষণ প্রেষণ (১০%)',r2(b*.1)]);
+  return B;
+}
 // rows: {l,v:[৪টি],c} অথবা {sec:'..'}
 function tableHTML(first,cols,rows){
   let H='<tr><th>'+first+'</th>'+cols.map((c,i)=>'<th class="h'+i+'">'+c[0]+'<small>'+c[1]+'</small></th>').join('')+'</tr>';
@@ -301,68 +379,36 @@ function cardsHTML(cols,rows){
     +rows.map(r=>r.sec?'<div class="pc-r sec"><span>'+r.sec+'</span></div>'
       :'<div class="pc-r'+(r.c?' '+r.c:'')+'"><span>'+r.l+'</span><span>'+r.v[i]+'</span></div>').join('')+'</div>').join('');
 }
+const sumA=a=>r2(a.reduce((t,x)=>t+x[1],0));
 function allow(g,nb,old,nb2){
-  const c=+$('aarea').value,h=$('ahill').value,k=+$('akids').value,dk=+$('adis').value;
-  const quar=$('aquar').checked,meal=$('ameal').checked,tf=g>=11,city=c<=1;
   const gpf=+toEn($('agpf').value)||0;
-  // ক) ২০১৫ গেজেট, ৩০ জুন ২০২৬ এর অঙ্কে (পুরনো মূল বেতনের উপর)
-  const A=[];
-  if(!quar)A.push(['বাড়ি ভাড়া',rent15(old,c)]);
-  A.push(['চিকিৎসা',1500]);
-  if(k)A.push(['শিক্ষা সহায়ক',k*500]);
-  if(tf&&!meal)A.push(['টিফিন',200]);
-  if(tf&&city)A.push(['যাতায়াত',300]);
-  if($('awash').checked)A.push(['ধোলাই',100]);
-  if($('awork').checked)A.push(['কার্যভার',Math.min(Math.round(old*.1),1500)]);
-  if(h==='h1')A.push(['পাহাড়ি',Math.min(Math.round(old*.2),3000)]);
-  if(h==='h2')A.push(['পাহাড়ি',Math.min(Math.round(old*.2),5000)]);
-  if($('atrain').checked&&g<=9)A.push(['প্রশিক্ষণ প্রেষণ (১০%)',Math.round(old*.1)]);
-  // খ) ৯ম গেজেট, ১ জানুয়ারি ২০২৮ থেকে (নতুন মূল বেতনের উপর)
-  const b=nb2,gr=g>=16?0:g>=10?1:g>=5?2:3;
-  const pct=[[60,50,45],[50,40,35],[45,35,30],[40,30,25]][gr][c];
-  const B=[];
-  if(!quar)B.push(['বাড়ি ভাড়া',Math.round(b*pct/100)]);
-  B.push(['চিকিৎসা',+$('aage').value]);
-  if(k)B.push(['শিক্ষা সহায়ক',k*500]);
-  if(dk)B.push(['প্রতিবন্ধী সন্তান',dk*3000]);
-  if(tf&&!meal)B.push(['টিফিন',500]);
-  if(tf&&city)B.push(['যাতায়াত',600]);
-  B.push(['মোবাইল',g<=5?500:150]);
-  if($('awash').checked)B.push(['ধোলাই',300]);
-  if($('awork').checked)B.push(['কার্যভার',1500]);
-  if(h==='h1')B.push(['পাহাড়ি',Math.min(Math.round(b*.2),5000)]);
-  if(h==='h2')B.push(['পাহাড়ি',Math.min(Math.round(b*.2),5500)]);
-  if(h==='h3')B.push(['হাওড়/দ্বীপ/চর',Math.min(Math.round(b*.2),5000)]);
-  if($('atrain').checked&&g<=9)B.push(['প্রশিক্ষণ প্রেষণ (১০%)',Math.round(b*.1)]);
+  const A=A15(g,old),B=B9(g,nb2);
   const p=g<=9?[40,70]:[50,75];
-  const basics=[old+(nb-old)*p[0]/100,old+(nb-old)*p[1]/100,nb2,nb2].map(Math.round);
-  const special=Math.max(Math.round(old*.15),1500);
+  const basics=[old+(nb-old)*p[0]/100,old+(nb-old)*p[1]/100,nb2,nb2].map(r2);
+  const special=sbf(g,old);
   const names=[...new Set([...A,...B].map(x=>x[0]))];
   const sets=[A,A,A,B];
   const gv=(st,n)=>(st.find(x=>x[0]===n)||[0,0])[1];
-  const allowT=sets.map(st=>st.reduce((t,x)=>t+x[1],0));
-  const gross=basics.map((v,i)=>v+allowT[i]);
-  const wf=basics.map(v=>Math.min(Math.round(v*WF_PCT/100),WF_MAX));
-  const ded=wf.map(w=>gpf+w+STAMP);
-  const net=gross.map((v,i)=>v-ded[i]);
+  const allowT=sets.map(sumA);
+  const gross=basics.map((v,i)=>r2(v+allowT[i]));
+  const wf=basics.map(v=>Math.min(r2(v*WF_PCT/100),WF_MAX));
+  const ded=wf.map(w=>r2(gpf+w+STAMP));
+  const net=gross.map((v,i)=>r2(v-ded[i]));
   const four=x=>[0,1,2,3].map(()=>x);
-  const rows=[{l:'মূল বেতন',v:basics.map(bn)},{l:'বিশেষ সুবিধা (বিলুপ্ত)',v:four('<s>'+bn(special)+'</s>'),c:'void'}];
-  names.forEach(n=>rows.push({l:n,v:sets.map(st=>bn(gv(st,n)))}));
-  rows.push({l:'মোট দাবি (Gross Salary)',v:gross.map(bn),c:'hl'},{sec:'কর্তন অংশ'},
-    {l:'জিপিএফ (GPF)',v:four(bn(gpf))},{l:'কল্যাণ তহবিল',v:wf.map(bn)},{l:'স্ট্যাম্প ডিউটি',v:four(bn(STAMP))},
-    {l:'মোট কর্তন',v:ded.map(bn),c:'ded2'},{l:'নীট প্রদেয় বেতন (হাতে পাবেন)',v:net.map(bn),c:'net'});
+  const rows=[{l:'মূল বেতন',v:basics.map(bnf)},{l:'বিশেষ সুবিধা (বিলুপ্ত)',v:four('<s>'+bnf(special)+'</s>'),c:'void'}];
+  names.forEach(n=>rows.push({l:n,v:sets.map(st=>bnf(gv(st,n)))}));
+  rows.push({l:'মোট দাবি (Gross Salary)',v:gross.map(bnf),c:'hl'},{sec:'কর্তন অংশ'},
+    {l:'জিপিএফ (GPF)',v:four(bnf(gpf))},{l:'কল্যাণ তহবিল',v:wf.map(bnf)},{l:'স্ট্যাম্প ডিউটি',v:four(bnf(STAMP))},
+    {l:'মোট কর্তন',v:ded.map(bnf),c:'ded2'},{l:'নীট প্রদেয় বেতন (হাতে পাবেন)',v:net.map(bnf),c:'net'});
   const claimT=tableHTML('দাবি অংশ (বেতন ও ভাতাদি)',PH,rows);
   $('aclaim').innerHTML=claimT;
   $('aclaimC').innerHTML=cardsHTML(PH,rows);
-  // সময়কাল অনুযায়ী মাসিক মোট (আগের সারণি)
-  const tr=[{l:'মূল বেতন',v:basics.map(bn)},{l:'ভাতা',v:allowT.map(bn)},{l:'মোট দাবি',v:gross.map(bn),c:'hl'},{l:'মোট কর্তন',v:ded.map(bn),c:'ded2'},{l:'নীট প্রদেয়',v:net.map(bn),c:'net'}];
-  // ডেস্কটপ: সময়কাল সারি, বিষয় কলাম
+  const tr=[{l:'মূল বেতন',v:basics.map(bnf)},{l:'ভাতা',v:allowT.map(bnf)},{l:'মোট দাবি',v:gross.map(bnf),c:'hl'},{l:'মোট কর্তন',v:ded.map(bnf),c:'ded2'},{l:'নীট প্রদেয়',v:net.map(bnf),c:'net'}];
   const heads=['মূল বেতন','ভাতা','মোট দাবি','মোট কর্তন','নীট প্রদেয়'];
   let T='<tr><th>সময়কাল</th>'+heads.map(x=>'<th style="background:#1d4ed8">'+x+'</th>').join('')+'</tr>';
-  PH.forEach((c,i)=>{T+='<tr><td><b class="c'+i+'">'+c[0]+'</b><br><small>'+c[1]+'</small></td><td>'+bn(basics[i])+'</td><td>'+bn(allowT[i])+'</td><td style="background:#dbeafe;font-weight:700;color:#1e3a8a">'+bn(gross[i])+'</td><td style="background:#fee2e2;font-weight:700;color:#991b1b">'+bn(ded[i])+'</td><td style="background:#d1fae5;font-weight:700;color:#047857">'+bn(net[i])+'</td></tr>'});
+  PH.forEach((c,i)=>{T+='<tr><td><b class="c'+i+'">'+c[0]+'</b><br><small>'+c[1]+'</small></td><td>'+bnf(basics[i])+'</td><td>'+bnf(allowT[i])+'</td><td style="background:#dbeafe;font-weight:700;color:#1e3a8a">'+bnf(gross[i])+'</td><td style="background:#fee2e2;font-weight:700;color:#991b1b">'+bnf(ded[i])+'</td><td style="background:#d1fae5;font-weight:700;color:#047857">'+bnf(net[i])+'</td></tr>'});
   $('atot').innerHTML=T;
   $('atotC').innerHTML=cardsHTML(PH,tr);
-  // প্রিন্ট শিট: উপরে প্রস্তুতকারক, নিচে বেতনের বিবরণী
   const sel=id=>$(id).selectedOptions[0].text;
   $('printSheet').innerHTML='<div class="prep"><b>প্রস্তুতকারক: মোঃ মানিক</b><br>গাড়ি চালক, রাজশাহী মেডিকেল কলেজ হাসপাতাল, রাজশাহী।<br>মোবাইল: ০১৭২৯-৮১৫২৯১</div>'
    +'<h2>বেতনের বিবরণী (৯ম জাতীয় বেতনস্কেল, ২০২৬)</h2>'
@@ -371,9 +417,46 @@ function allow(g,nb,old,nb2){
    +'<h3>সময়কাল অনুযায়ী মাসিক মোট</h3><table class="ct">'+T+'</table>'
    +'<div class="foot">বিশেষ সুবিধা বিলুপ্ত (৯ম গেজেট ১(৩)(ট)), মোটে যোগ হয়নি। কল্যাণ তহবিল ও স্ট্যাম্প ডিউটি ব্যবহারকারী-নির্ধারিত হার।</div>';
 }
-['grade','aarea','ahill','akids','adis','aage','agpf','aquar','ameal','awash','awork','atrain'].forEach(id=>$(id).addEventListener('input',calc));
-fillOld();
-calc();
+// বকেয়া: ৯ম স্কেলে প্রথম ধাপের প্রাপ্য বনাম এখন (৮ম স্কেলে) যা আহরণ করছেন
+function arrears(g,old,r){
+  const d=D[g],io=d.o.indexOf(old);
+  const drawnB=(g!==1&&$('elig').checked&&io>=0&&io<d.o.length-1)?d.o[io+1]:old; // ১ জুলাই ২০২৬-এ পুরনো স্কেলের বৃদ্ধিসহ
+  const Eb=r2(old+(r.nb-old)*(g<=9?40:50)/100);            // ৯ম গেজেটে প্রথম ধাপের মূল বেতন
+  const Acur=A15(g,drawnB),Aent=A15(g,old);                 // আহরিত ভাতা বনাম ৩০ জুন ২০২৬-এর অঙ্কে স্থির ভাতা
+  const find=(a,n)=>(a.find(x=>x[0]===n)||[0,0])[1];
+  const rentC=find(Acur,'বাড়ি ভাড়া'),rentE=find(Aent,'বাড়ি ভাড়া');
+  const othC=r2(sumA(Acur)-rentC),othE=r2(sumA(Aent)-rentE);
+  const SB=sbf(g,drawnB);
+  const curGross=r2(drawnB+sumA(Acur)+SB),entGross=r2(Eb+sumA(Aent));
+  const basicArr=r2(Eb-drawnB),X=r2(sumA(Acur)-sumA(Aent));
+  const N=+$('months').value||1;
+  const cols=[['বর্তমানে পাচ্ছেন','৮ম স্কেল, আহরিত'],['৯ম গেজেটে প্রাপ্য','প্রথম ধাপ']];
+  const rows=[{l:'মূল বেতন',v:[bnf(drawnB),bnf(Eb)]},{l:'বিশেষ সুবিধা',v:[bnf(SB),'<s>বিলুপ্ত</s>']}];
+  if(!$('aquar').checked)rows.push({l:'বাড়ি ভাড়া',v:[bnf(rentC),bnf(rentE)]});
+  rows.push({l:'অন্যান্য ভাতা',v:[bnf(othC),bnf(othE)]},{l:'মোট দাবি',v:[bnf(curGross),bnf(entGross)],c:'hl'});
+  let T='<tr><th>প্রতি মাসে</th>'+cols.map((c,i)=>'<th class="h'+i+'">'+c[0]+'<small>'+c[1]+'</small></th>').join('')+'</tr>';
+  rows.forEach(x=>{T+='<tr'+(x.c?' class="'+x.c+'"':'')+'><td>'+x.l+'</td>'+x.v.map(t=>'<td>'+t+'</td>').join('')+'</tr>';});
+  $('acmp').innerHTML=T;
+  const R=(l,v,c)=>'<div class="pc-r'+(c?' '+c:'')+'"><span>'+l+'</span><span>'+bnf(v)+'</span></div>';
+  const n=bn(N);
+  $('asum').innerHTML=
+    R('মূল বেতনের বকেয়া (প্রাপ্য − আহরিত) × '+n+' মাস',basicArr*N)
+   +R('(−) আহরিত বিশেষ সুবিধা সমন্বয় × '+n+' মাস',-SB*N)
+   +R('নিট বকেয়া (গেজেট অনুযায়ী)',(basicArr-SB)*N,'hl')
+   +R('(−) বাড়ি ভাড়া বাড়তি আহরণ সমন্বয় × '+n+' মাস (সম্ভাব্য)',-X*N)
+   +R('সম্ভাব্য নিট বকেয়া (সব সমন্বয়ের পর)',(basicArr-SB-X)*N,'net');
+  $('anote').textContent='মূল বেতনের বকেয়া = ৯ম গেজেটে প্রাপ্য − এখন যা আহরণ করছেন, তাই ইতিমধ্যে পাওয়া বাড়তি মূল বেতন ('+bnf(drawnB-old)+' টাকা) নিজে থেকেই বাদ যায়। আহরিত বিশেষ সুবিধা বকেয়ার সঙ্গে সমন্বয়ের কথা ১(৩)(ট)-তে স্পষ্ট আছে। ভাতা ৩০ জুন ২০২৬-এর অঙ্কে স্থির, তাই তার বেশি আহরণ ('+bnf(X)+' টাকা প্রতি মাসে) সমন্বয় হতে পারে; গেজেটে আলাদা করে বলা নেই, হিসাবরক্ষণ অফিসের সিদ্ধান্ত দেখুন। বকেয়া মোট (Gross), কর ও অন্যান্য কর্তনের আগে।';
+}
+function resetForm(){
+  initGrade();fillOld();
+  $('aarea').value='city';$('ahill').value='';$('akids').value='0';$('adis').value='0';$('aage').value='3000';$('agpf').value='0';$('months').value='3';
+  ['aquar','ameal','awash','awork','atrain'].forEach(id=>$(id).checked=false);$('elig').checked=true;
+  calc();
+}
+['old','months','elig','aarea','ahill','akids','adis','aage','agpf','aquar','ameal','awash','awork','atrain'].forEach(id=>$(id).addEventListener('input',calc));
+$('resetBtn').addEventListener('click',()=>{resetForm();window.scrollTo({top:0,behavior:'smooth'});});
+window.addEventListener('pageshow',e=>{if(e.persisted)resetForm();});
+resetForm();
 </script>
 </body>
 </html>
